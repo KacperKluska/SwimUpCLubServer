@@ -1,13 +1,31 @@
-import { PrimaryGeneratedColumn, Column, Entity, BaseEntity } from 'typeorm';
+import {
+  PrimaryGeneratedColumn,
+  Column,
+  Entity,
+  BaseEntity,
+  ManyToOne,
+} from 'typeorm';
+import { Gender } from './gender.entity';
 
 @Entity()
 export class UserDetails extends BaseEntity {
-  constructor() {
+  constructor(
+    phoneNumber: string,
+    photo?: string,
+    age?: number,
+    weight?: number,
+    height?: number,
+  ) {
     super();
+    this.phoneNumber = phoneNumber;
+    this.photo = photo;
+    this.age = age;
+    this.weight = weight;
+    this.height = height;
   }
 
   @PrimaryGeneratedColumn('uuid')
-  id: number;
+  id: string;
 
   @Column({ length: 15, unique: true })
   phoneNumber: string;
@@ -23,4 +41,7 @@ export class UserDetails extends BaseEntity {
 
   @Column({ nullable: true, type: 'double precision' })
   height: number;
+
+  @ManyToOne(() => Gender, (gender) => gender.id, { nullable: false })
+  gender: Gender;
 }
