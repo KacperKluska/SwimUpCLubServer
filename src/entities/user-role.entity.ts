@@ -10,6 +10,6 @@ export class UserRole extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ length: 50 })
+  @Column({ length: 50, unique: true })
   role: string;
 }
