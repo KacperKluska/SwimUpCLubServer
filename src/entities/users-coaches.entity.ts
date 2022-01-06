@@ -2,8 +2,8 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   BaseEntity,
-  OneToOne,
   JoinColumn,
+  ManyToOne,
 } from 'typeorm';
 import { User } from './user.entity';
 
@@ -18,11 +18,11 @@ export class UsersCoaches extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @OneToOne(() => User)
+  @ManyToOne(() => User, (swimmer) => swimmer.id, { nullable: false })
   @JoinColumn()
   swimmer: User;
 
-  @OneToOne(() => User)
+  @ManyToOne(() => User, (coach) => coach.id, { nullable: false })
   @JoinColumn()
   coach: User;
 }

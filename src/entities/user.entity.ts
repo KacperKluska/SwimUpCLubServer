@@ -3,19 +3,26 @@ import {
   PrimaryGeneratedColumn,
   Column,
   BaseEntity,
-  OneToOne,
+  ManyToOne,
   JoinColumn,
 } from 'typeorm';
 import { UserRole } from './user-role.entity';
 
 @Entity()
 export class User extends BaseEntity {
-  constructor(name: string, surname: string, email: string, password: string) {
+  constructor(
+    name: string,
+    surname: string,
+    email: string,
+    password: string,
+    userRole: UserRole,
+  ) {
     super();
     this.name = name;
     this.surname = surname;
     this.email = email;
     this.password = password;
+    this.userRole = userRole;
   }
 
   @PrimaryGeneratedColumn('uuid')
@@ -33,7 +40,7 @@ export class User extends BaseEntity {
   @Column({ length: 255 })
   password: string;
 
-  @OneToOne(() => UserRole)
+  @ManyToOne(() => UserRole, (userRole) => userRole.id, { nullable: false })
   @JoinColumn()
   userRole: UserRole;
 }
