@@ -46,6 +46,7 @@ export class User extends BaseEntity {
   @JoinColumn()
   userRole: UserRole;
 
-  @OneToOne(() => UserDetails)
+  @OneToOne(() => UserDetails, { nullable: false })
+  @JoinColumn()
   userDetails: UserDetails;
 }
