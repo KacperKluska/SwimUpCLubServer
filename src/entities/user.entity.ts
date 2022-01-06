@@ -1,4 +1,12 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  BaseEntity,
+  OneToOne,
+  JoinColumn,
+} from 'typeorm';
+import { UserRole } from './user-role.entity';
 
 @Entity()
 export class User extends BaseEntity {
@@ -24,4 +32,8 @@ export class User extends BaseEntity {
 
   @Column({ length: 255 })
   password: string;
+
+  @OneToOne(() => UserRole)
+  @JoinColumn()
+  userRole: UserRole;
 }
