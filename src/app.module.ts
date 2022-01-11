@@ -10,6 +10,7 @@ import { GendersModule } from './genders/genders.module';
 import { WorkoutSessionsModule } from './workout-sessions/workout-sessions.module';
 import { WorkoutsModule } from './workouts/workouts.module';
 import { NotesModule } from './notes/notes.module';
+import { WorkoutTypesModule } from './workout-types/workout-types.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { NotesModule } from './notes/notes.module';
     WorkoutSessionsModule,
     WorkoutsModule,
     NotesModule,
+    WorkoutTypesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

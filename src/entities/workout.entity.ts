@@ -6,6 +6,7 @@ import {
   Column,
 } from 'typeorm';
 import { WorkoutSession } from './workout-session.entity';
+import { WorkoutTypes } from './workout-types.entity';
 
 @Entity()
 export class Workout extends BaseEntity {
@@ -35,4 +36,9 @@ export class Workout extends BaseEntity {
     nullable: false,
   })
   workoutSession: WorkoutSession;
+
+  @ManyToOne(() => WorkoutTypes, (workoutTypes) => workoutTypes.id, {
+    nullable: false,
+  })
+  workoutTypes: WorkoutTypes;
 }
