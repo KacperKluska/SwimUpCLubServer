@@ -12,11 +12,21 @@ import { WorkoutTypes } from './workout-types.entity';
 
 @Entity()
 export class Workout extends BaseEntity {
-  constructor(time: string, distance: number, workoutSession: WorkoutSession) {
+  constructor(
+    time: string,
+    distance: number,
+    workoutSession: WorkoutSession,
+    workoutTypes: WorkoutTypes,
+    swimmingStyle: SwimmingStyle,
+    poolLength: PoolLength,
+  ) {
     super();
     this.time = time;
     this.distance = distance;
     this.workoutSession = workoutSession;
+    this.workoutTypes = workoutTypes;
+    this.swimmingStyle = swimmingStyle;
+    this.poolLength = poolLength;
   }
 
   @PrimaryGeneratedColumn('uuid')
