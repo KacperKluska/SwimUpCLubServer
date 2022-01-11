@@ -5,6 +5,7 @@ import {
   ManyToOne,
   Column,
 } from 'typeorm';
+import { PoolLength } from './pool-length.entity';
 import { SwimmingStyle } from './swimming-style.entity';
 import { WorkoutSession } from './workout-session.entity';
 import { WorkoutTypes } from './workout-types.entity';
@@ -47,4 +48,9 @@ export class Workout extends BaseEntity {
     nullable: false,
   })
   swimmingStyle: SwimmingStyle;
+
+  @ManyToOne(() => PoolLength, (poolLength) => poolLength.id, {
+    nullable: false,
+  })
+  poolLength: PoolLength;
 }

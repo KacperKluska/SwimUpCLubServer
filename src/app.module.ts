@@ -12,6 +12,7 @@ import { WorkoutsModule } from './workouts/workouts.module';
 import { NotesModule } from './notes/notes.module';
 import { WorkoutTypesModule } from './workout-types/workout-types.module';
 import { SwimmingStylesModule } from './swimming-styles/swimming-styles.module';
+import { PoolLengthsModule } from './pool-lengths/pool-lengths.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { SwimmingStylesModule } from './swimming-styles/swimming-styles.module';
     NotesModule,
     WorkoutTypesModule,
     SwimmingStylesModule,
+    PoolLengthsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
