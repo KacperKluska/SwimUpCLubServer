@@ -8,6 +8,7 @@ import { UsersCoachesModule } from './users-coaches/users-coaches.module';
 import { UserDetailsModule } from './user-details/user-details.module';
 import { GendersModule } from './genders/genders.module';
 import { WorkoutSessionsModule } from './workout-sessions/workout-sessions.module';
+import { WorkoutsModule } from './workouts/workouts.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { WorkoutSessionsModule } from './workout-sessions/workout-sessions.modul
     UserDetailsModule,
     GendersModule,
     WorkoutSessionsModule,
+    WorkoutsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
