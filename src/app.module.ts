@@ -11,6 +11,7 @@ import { WorkoutSessionsModule } from './workout-sessions/workout-sessions.modul
 import { WorkoutsModule } from './workouts/workouts.module';
 import { NotesModule } from './notes/notes.module';
 import { WorkoutTypesModule } from './workout-types/workout-types.module';
+import { SwimmingStylesModule } from './swimming-styles/swimming-styles.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { WorkoutTypesModule } from './workout-types/workout-types.module';
     WorkoutsModule,
     NotesModule,
     WorkoutTypesModule,
+    SwimmingStylesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

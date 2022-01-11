@@ -5,6 +5,7 @@ import {
   ManyToOne,
   Column,
 } from 'typeorm';
+import { SwimmingStyle } from './swimming-style.entity';
 import { WorkoutSession } from './workout-session.entity';
 import { WorkoutTypes } from './workout-types.entity';
 
@@ -41,4 +42,9 @@ export class Workout extends BaseEntity {
     nullable: false,
   })
   workoutTypes: WorkoutTypes;
+
+  @ManyToOne(() => SwimmingStyle, (swimmingStyle) => swimmingStyle.id, {
+    nullable: false,
+  })
+  swimmingStyle: SwimmingStyle;
 }
