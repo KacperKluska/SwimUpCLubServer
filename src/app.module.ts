@@ -9,6 +9,7 @@ import { UserDetailsModule } from './user-details/user-details.module';
 import { GendersModule } from './genders/genders.module';
 import { WorkoutSessionsModule } from './workout-sessions/workout-sessions.module';
 import { WorkoutsModule } from './workouts/workouts.module';
+import { NotesModule } from './notes/notes.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { WorkoutsModule } from './workouts/workouts.module';
     GendersModule,
     WorkoutSessionsModule,
     WorkoutsModule,
+    NotesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
