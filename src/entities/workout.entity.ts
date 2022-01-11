@@ -2,12 +2,9 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   BaseEntity,
-  JoinColumn,
   ManyToOne,
   Column,
-  Timestamp,
 } from 'typeorm';
-import { User } from './user.entity';
 import { WorkoutSession } from './workout-session.entity';
 
 @Entity()
