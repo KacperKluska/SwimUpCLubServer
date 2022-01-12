@@ -18,11 +18,17 @@ export class UsersCoaches extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => User, (swimmer) => swimmer.id, { nullable: false })
+  @ManyToOne(() => User, (swimmer) => swimmer.id, {
+    nullable: false,
+    onDelete: 'CASCADE',
+  })
   @JoinColumn()
   swimmer: User;
 
-  @ManyToOne(() => User, (coach) => coach.id, { nullable: false })
+  @ManyToOne(() => User, (coach) => coach.id, {
+    nullable: false,
+    onDelete: 'CASCADE',
+  })
   @JoinColumn()
   coach: User;
 }

@@ -46,6 +46,7 @@ export class Workout extends BaseEntity {
 
   @ManyToOne(() => WorkoutSession, (workoutSession) => workoutSession.id, {
     nullable: false,
+    onDelete: 'CASCADE',
   })
   workoutSession: WorkoutSession;
 
