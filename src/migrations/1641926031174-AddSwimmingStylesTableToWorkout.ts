@@ -7,7 +7,7 @@ export class AddSwimmingStylesTableToWorkout1641926031174
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      `CREATE TABLE "swimming_style" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "length" integer NOT NULL, CONSTRAINT "UQ_7ff36c914138aab4fb5c0ad0ac9" UNIQUE ("length"), CONSTRAINT "PK_c072564593955f1748c48790d5a" PRIMARY KEY ("id"))`,
+      `CREATE TABLE "swimming_style" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "style" character varying(50) NOT NULL, CONSTRAINT "UQ_7ff36c914138aab4fb5c0ad0ac9" UNIQUE ("style"), CONSTRAINT "PK_c072564593955f1748c48790d5a" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
       `ALTER TABLE "workout" ADD "swimmingStyleId" uuid NOT NULL`,
