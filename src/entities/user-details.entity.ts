@@ -4,8 +4,11 @@ import {
   Entity,
   BaseEntity,
   ManyToOne,
+  OneToOne,
+  JoinColumn,
 } from 'typeorm';
 import { Gender } from './gender.entity';
+import { User } from './user.entity';
 
 @Entity()
 export class UserDetails extends BaseEntity {
@@ -41,6 +44,13 @@ export class UserDetails extends BaseEntity {
 
   @Column({ nullable: true, type: 'double precision' })
   height: number;
+
+  @OneToOne(() => User, (user) => user.id, {
+    nullable: false,
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn()
+  user: User;
 
   @ManyToOne(() => Gender, (gender) => gender.id, { nullable: false })
   gender: Gender;

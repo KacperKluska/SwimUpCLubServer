@@ -5,9 +5,7 @@ import {
   BaseEntity,
   ManyToOne,
   JoinColumn,
-  OneToOne,
 } from 'typeorm';
-import { UserDetails } from './user-details.entity';
 import { UserRole } from './user-role.entity';
 
 @Entity()
@@ -45,8 +43,4 @@ export class User extends BaseEntity {
   @ManyToOne(() => UserRole, (userRole) => userRole.id, { nullable: false })
   @JoinColumn()
   userRole: UserRole;
-
-  @OneToOne(() => UserDetails, { nullable: false })
-  @JoinColumn()
-  userDetails: UserDetails;
 }
