@@ -10,6 +10,6 @@ export class SwimmingStyle extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ unique: true })
+  @Column({ unique: true, length: 50 })
   style: string;
 }
