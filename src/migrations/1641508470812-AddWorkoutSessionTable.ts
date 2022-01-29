@@ -5,7 +5,7 @@ export class AddWorkoutSessionTable1641508470812 implements MigrationInterface {
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      `CREATE TABLE "workout_session" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "date" date NOT NULL, "swimmerId" uuid NOT NULL, "coachId" uuid NOT NULL, CONSTRAINT "PK_9afb74a335d8e9fd266763779af" PRIMARY KEY ("id"))`,
+      `CREATE TABLE "workout_session" ("id" uuid NOT NULL DEFAULT uuid_generate_v4(), "date" TIMESTAMP NOT NULL DEFAULT now(), "swimmerId" uuid NOT NULL, "coachId" uuid NOT NULL, CONSTRAINT "PK_9afb74a335d8e9fd266763779af" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
       `ALTER TABLE "workout_session" ADD CONSTRAINT "FK_41ac9d616dc74ea8d483ade58b2" FOREIGN KEY ("swimmerId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,

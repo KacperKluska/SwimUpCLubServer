@@ -5,6 +5,7 @@ import {
   JoinColumn,
   ManyToOne,
   Column,
+  CreateDateColumn,
 } from 'typeorm';
 import { User } from './user.entity';
 
@@ -21,6 +22,7 @@ export class WorkoutSession extends BaseEntity {
   id: string;
 
   @Column({ type: 'date' })
+  @CreateDateColumn()
   date: Date;
 
   @ManyToOne(() => User, (swimmer) => swimmer.id, {
