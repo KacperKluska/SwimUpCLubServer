@@ -1,5 +1,5 @@
-export interface Response {
+export interface MyResponse {
   status: number;
   message: string;
-  details?: string;
+  data?: string | object;
 }
