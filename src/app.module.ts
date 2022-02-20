@@ -14,6 +14,7 @@ import { WorkoutTypesModule } from './workout-types/workout-types.module';
 import { SwimmingStylesModule } from './swimming-styles/swimming-styles.module';
 import { PoolLengthsModule } from './pool-lengths/pool-lengths.module';
 import { AuthModule } from './auth/auth.module';
+import { SeedsModule } from './seeds/seeds.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { AuthModule } from './auth/auth.module';
     SwimmingStylesModule,
     PoolLengthsModule,
     AuthModule,
+    SeedsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

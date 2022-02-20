@@ -110,7 +110,6 @@ export class AuthService {
       role,
     );
 
-    console.log(`response: ${response}`);
     response.cookie('access_token', accessToken, {
       httpOnly: true,
     });

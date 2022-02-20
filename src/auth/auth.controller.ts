@@ -37,12 +37,19 @@ export class AuthController {
 
   @Get('refresh')
   @UseGuards(JwtAuthGuard)
-  refreshToken(@Req() request, @Res({ passthrough: true }) response) {
-    return this.authService.refreshToken(
+  async refreshToken(
+    @Req() request,
+    @Res({ passthrough: true }) response,
+  ): Promise<MyResponse> {
+    const result = await this.authService.refreshToken(
       response,
       request.user.email,
       request.user.role,
     );
+    return {
+      ...result,
+      data: { email: request.user.email, role: request.user.role },
+    };
   }
 
   @Post('register')
