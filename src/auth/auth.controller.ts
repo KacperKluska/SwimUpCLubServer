@@ -8,7 +8,7 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common';
-import { newUserDTO, userLoginDTO } from 'src/users/dto/userAuth';
+import { NewUserDTO, UserLoginDTO } from 'src/users/dto/userAuth';
 import { AuthService } from './auth.service';
 import { Response } from 'express';
 import { MyResponse } from 'src/shared_dto/response';
@@ -23,7 +23,7 @@ export class AuthController {
 
   @Get('login')
   async login(
-    @Body() body: userLoginDTO,
+    @Body() body: UserLoginDTO,
     @Res({ passthrough: true }) response,
   ) {
     return await this.authService.loginUser(body, response);
@@ -57,7 +57,7 @@ export class AuthController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   async register(
     @Body()
-    body: newUserDTO,
+    body: NewUserDTO,
   ): Promise<MyResponse> {
     return await this.authService.registerNewUser(body);
   }

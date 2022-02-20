@@ -1,7 +1,7 @@
 import { Injectable, Res } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { User } from 'src/entities/user.entity';
-import { newUserDTO, userLoginDTO } from 'src/users/dto/userAuth';
+import { NewUserDTO, UserLoginDTO } from 'src/users/dto/userAuth';
 import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcrypt';
 import { MyResponse } from 'src/shared_dto/response';
@@ -45,7 +45,7 @@ export class AuthService {
   }
 
   async loginUser(
-    data: userLoginDTO,
+    data: UserLoginDTO,
     @Res() response: Response,
   ): Promise<MyResponse> {
     const user = await this.userService.findOneByEmail(data.email);
@@ -120,12 +120,9 @@ export class AuthService {
     return { status: 200, message: 'Tokens refreshed' };
   }
 
-  async registerNewUser(data: newUserDTO): Promise<MyResponse> {
+  async registerNewUser(data: NewUserDTO): Promise<MyResponse> {
     const saltOrRounds = parseInt(process.env.SALT_OF_ROUNDS);
     const hashedPassword = await bcrypt.hash(data.password, saltOrRounds);
-
-    const role = await this.userRolesService.findRoleByName(data.role);
-    if (!role) return { status: 400, message: 'Role not exist' }; // unknown role name
 
     const emailAlreadyInDatabase = await User.findOne({ email: data.email });
     if (emailAlreadyInDatabase)
@@ -134,17 +131,21 @@ export class AuthService {
         message: `User with email {${data.email}} already exist`,
       }; // user with this email already exists
 
-    const newUser = new User(
+    const result = await this.userService.createUserWithDetails(
       data.name,
       data.surname,
       data.email,
       hashedPassword,
-      role,
+      data.role,
+      data.phoneNumber,
+      data.gender,
     );
-
-    const result = await User.save(newUser);
     if (!result) return { status: 400, message: 'Failed to add new user' }; // failed to add new user
 
-    return { status: 201, message: 'Success, user account created' };
+    return {
+      status: 201,
+      message: 'Success, user account created',
+      data: { result },
+    };
   }
 }

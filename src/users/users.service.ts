@@ -1,19 +1,116 @@
 import { Injectable } from '@nestjs/common';
 import { User } from 'src/entities/user.entity';
+import { MyResponse } from 'src/shared_dto/response';
+import { UserDetailsService } from 'src/user-details/user-details.service';
 import { UserRolesService } from 'src/user-roles/user-roles.service';
+import { UserData } from './dto/userAuth';
 
 @Injectable()
 export class UsersService {
-  constructor(private userRolesService: UserRolesService) {}
+  constructor(
+    private userDetailsService: UserDetailsService,
+    private userRoleService: UserRolesService,
+  ) {}
 
   async findOneByEmail(email: string): Promise<User | undefined> {
+    const user = (
+      await User.find({
+        relations: ['userRole'],
+        where: {
+          email,
+        },
+      })
+    )[0];
+
+    return user;
+  }
+
+  private async findUsersWithRole(role: string): Promise<User[]> {
     const users = await User.find({
       relations: ['userRole'],
       where: {
-        email,
+        userRole: { role },
       },
     });
+    return users;
+  }
 
-    return users[0];
+  async findAllUsers(): Promise<UserData[]> {
+    const users = await User.find({
+      relations: ['userRole'],
+    });
+
+    const result = users.map((user) => {
+      return {
+        name: user.name,
+        surname: user.surname,
+        email: user.email,
+        role: user.userRole.role,
+      };
+    });
+    return result;
+  }
+
+  async findAllSwimmers(): Promise<UserData[]> {
+    const swimmers = await this.findUsersWithRole('USER');
+
+    const result = swimmers.map((user) => {
+      return {
+        name: user.name,
+        surname: user.surname,
+        email: user.email,
+        role: user.userRole.role,
+      };
+    });
+    return result;
+  }
+
+  async findAllCoaches(): Promise<UserData[]> {
+    const coaches = await this.findUsersWithRole('COACH');
+
+    const result = coaches.map((user) => {
+      return {
+        name: user.name,
+        surname: user.surname,
+        email: user.email,
+        role: user.userRole.role,
+      };
+    });
+    return result;
+  }
+
+  async createUserWithDetails(
+    name: string,
+    surname: string,
+    email: string,
+    hashedPassword: string,
+    userRole: string,
+    phoneNumber: string,
+    gender: string,
+  ) {
+    const roleResult = await this.userRoleService.findRoleByName(userRole);
+    const newUser = new User(name, surname, email, hashedPassword, roleResult);
+    const result = await User.save(newUser);
+    if (!result) return { status: 400, message: 'Failed to add new user' };
+
+    const detailsResult = await this.userDetailsService.crateUserDetails(
+      phoneNumber,
+      newUser,
+      gender,
+    );
+
+    if (!detailsResult) return 'Failure';
+    return 'Success';
+  }
+
+  async deleteUser(email: string): Promise<MyResponse> {
+    const user = await this.findOneByEmail(email);
+    const result = await User.remove(user);
+    if (!result)
+      return {
+        status: 404,
+        message: 'Cannot remove user with this email address',
+      };
+    return { status: 200, message: `User with email: ${email} removed` };
   }
 }
