@@ -26,10 +26,25 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
+# SwimUp Club
+
+A server side application for SwimUp Club application. This is part of my BSc Thesis. It contains PostgreSQL database configuration and a lot of endpoints for users purpose. It supports 3 user roles account and JWT Authentication and Autorization.
+
+## Documentation
+
+You can see the Postman documentation for available enpoint [here](https://documenter.getpostman.com/view/15917175/UVkmQcM6)
+
 ## Installation
 
 ```bash
 $ npm install
+```
+
+You need to make `.env` file, based on `.env.sample` file
+
+To run migrations type
+```bash
+npm typeorm migrations:run
 ```
 
 ## Running the app
