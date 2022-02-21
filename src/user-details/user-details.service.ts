@@ -1,9 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { Gender } from 'src/entities/gender.entity';
 import { UserDetails } from 'src/entities/user-details.entity';
 import { User } from 'src/entities/user.entity';
 import { GendersService } from 'src/genders/genders.service';
-import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class UserDetailsService {
@@ -12,14 +10,13 @@ export class UserDetailsService {
   async findUserDetails(user: User) {
     const details = (
       await UserDetails.find({
-        relations: ['users', 'genders'],
+        relations: ['user', 'gender'],
         where: {
-          users: user,
+          user: user,
         },
       })
     )[0];
 
-    console.log(details);
     return details;
   }
 
@@ -40,5 +37,12 @@ export class UserDetailsService {
       return { status: 400, message: 'Failed to add new user details' };
 
     return result;
+  }
+
+  async updateUserImage(user: User, imageName: string) {
+    const userDetails = await this.findUserDetails(user);
+    userDetails.photo = imageName;
+    UserDetails.save(userDetails);
+    return 'Success';
   }
 }

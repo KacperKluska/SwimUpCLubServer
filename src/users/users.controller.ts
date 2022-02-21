@@ -1,16 +1,7 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Post,
-  Req,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Req, UseGuards } from '@nestjs/common';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { JwtAuthGuard, RolesGuard } from 'src/auth/guards';
 import { Role } from 'src/auth/utils/roles.enum';
-import { NewUserDTO } from './dto/userAuth';
 import { UsersService } from './users.service';
 
 @Controller('users')

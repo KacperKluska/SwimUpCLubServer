@@ -113,4 +113,17 @@ export class UsersService {
       };
     return { status: 200, message: `User with email: ${email} removed` };
   }
+
+  async updateUserImageName(email: string, imageName: string): Promise<string> {
+    const user = await this.findOneByEmail(email);
+    console.log(user);
+    console.log(imageName);
+    return await this.userDetailsService.updateUserImage(user, imageName);
+  }
+
+  async getUserImageName(email: string): Promise<string> {
+    const user = await this.findOneByEmail(email);
+    const userDetails = await this.userDetailsService.findUserDetails(user);
+    return userDetails?.photo;
+  }
 }
