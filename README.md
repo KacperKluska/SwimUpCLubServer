@@ -34,6 +34,10 @@ A server side application for SwimUp Club application. This is part of my BSc Th
 
 You can see the Postman documentation for available enpoint [here](https://documenter.getpostman.com/view/15917175/UVkmQcM6)
 
+Database schema with relations:
+
+![image](https://user-images.githubusercontent.com/50757117/155041121-08bd2e59-1ea8-492c-bb3d-89347ae6f841.png)
+
 ## Installation
 
 ```bash
