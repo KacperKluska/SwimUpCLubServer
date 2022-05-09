@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Post,
+  Query,
   Req,
   Res,
   UseGuards,
@@ -23,10 +24,10 @@ export class AuthController {
 
   @Get('login')
   async login(
-    @Body() body: UserLoginDTO,
+    @Query() query: UserLoginDTO,
     @Res({ passthrough: true }) response,
   ) {
-    return await this.authService.loginUser(body, response);
+    return await this.authService.loginUser(query, response);
   }
 
   @UseGuards(JwtAuthGuard)

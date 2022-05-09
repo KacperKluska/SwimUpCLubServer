@@ -1,8 +1,8 @@
 import {
-  Body,
   Controller,
   Get,
   Post,
+  Query,
   Req,
   Res,
   UploadedFile,
@@ -29,8 +29,11 @@ export class UploadsController {
   }
 
   @Get('server-file')
-  getServerImage(@Body() body: { imgName: string }, @Res() response: Response) {
-    response.sendFile(body.imgName, { root: process.env.UPLOAD_SERVER_DIR });
+  getServerImage(
+    @Query() query: { imgName: string },
+    @Res() response: Response,
+  ) {
+    response.sendFile(query.imgName, { root: process.env.UPLOAD_SERVER_DIR });
   }
 
   @Post('file')
