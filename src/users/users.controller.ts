@@ -11,7 +11,7 @@ export class UsersController {
   @Get('user')
   @UseGuards(JwtAuthGuard)
   async findUser(@Req() request) {
-    return await this.userService.findOneByEmail(request.user.email);
+    return await this.userService.getUserDataWithDetails(request.user.email);
   }
 
   @Get()

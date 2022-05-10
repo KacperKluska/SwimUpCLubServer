@@ -25,6 +25,34 @@ export class UsersService {
     return user;
   }
 
+  async getUserDataWithDetails(email: string): Promise<any> {
+    const result = await this.findOneByEmail(email);
+    if (!result) return result;
+
+    const { user, gender, ...userDetails } =
+      await this.userDetailsService.findUserDetails(result);
+    const { id, password, userRole, ...userData } = result;
+
+    return {
+      ...userData,
+      ...userDetails,
+      role: userRole.role,
+      gender: gender.gender,
+    };
+  }
+
+  async getUserData(email: string): Promise<any> {
+    const result = await this.findOneByEmail(email);
+    if (!result) return result;
+
+    const { id, password, userRole, ...userData } = result;
+
+    return {
+      ...userData,
+      role: userRole.role,
+    };
+  }
+
   private async findUsersWithRole(role: string): Promise<User[]> {
     const users = await User.find({
       relations: ['userRole'],
