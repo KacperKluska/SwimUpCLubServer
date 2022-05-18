@@ -1,5 +1,8 @@
 import { Injectable } from '@nestjs/common';
+import { Gender } from 'src/entities/gender.entity';
+import { UserRole } from 'src/entities/user-role.entity';
 import { User } from 'src/entities/user.entity';
+import { GendersService } from 'src/genders/genders.service';
 import { MyResponse } from 'src/shared_dto/response';
 import { UserDetailsService } from 'src/user-details/user-details.service';
 import { UserRolesService } from 'src/user-roles/user-roles.service';
@@ -10,6 +13,7 @@ export class UsersService {
   constructor(
     private userDetailsService: UserDetailsService,
     private userRoleService: UserRolesService,
+    private gendersService: GendersService,
   ) {}
 
   async findOneByEmail(email: string): Promise<User | undefined> {
@@ -153,5 +157,13 @@ export class UsersService {
     const user = await this.findOneByEmail(email);
     const userDetails = await this.userDetailsService.findUserDetails(user);
     return userDetails?.photo;
+  }
+
+  async getAllUserRoles(): Promise<UserRole[]> {
+    return await this.userRoleService.findAllRoles();
+  }
+
+  async getAllGenders(): Promise<Gender[]> {
+    return await this.gendersService.findAllGenders();
   }
 }

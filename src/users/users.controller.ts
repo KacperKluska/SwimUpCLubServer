@@ -41,4 +41,14 @@ export class UsersController {
   async deleteUser(@Body() body: { email: string }) {
     return await this.userService.deleteUser(body.email);
   }
+
+  @Get('genders')
+  async getAllGenders() {
+    return await this.userService.getAllGenders();
+  }
+
+  @Get('roles')
+  async getAllUserRoles() {
+    return await this.userService.getAllUserRoles();
+  }
 }
