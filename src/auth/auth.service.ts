@@ -140,12 +140,7 @@ export class AuthService {
       data.phoneNumber,
       data.gender,
     );
-    if (!result) return { status: 400, message: 'Failed to add new user' }; // failed to add new user
 
-    return {
-      status: 201,
-      message: 'Success, user account created',
-      data: { result },
-    };
+    return result;
   }
 }

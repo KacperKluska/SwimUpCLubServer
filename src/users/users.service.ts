@@ -121,18 +121,42 @@ export class UsersService {
     gender: string,
   ) {
     const roleResult = await this.userRoleService.findRoleByName(userRole);
+    if (!roleResult)
+      return {
+        status: 400,
+        message: 'Failed to add new user. Bad role choosed',
+      };
     const newUser = new User(name, surname, email, hashedPassword, roleResult);
     const result = await User.save(newUser);
     if (!result) return { status: 400, message: 'Failed to add new user' };
 
-    const detailsResult = await this.userDetailsService.crateUserDetails(
-      phoneNumber,
-      newUser,
-      gender,
-    );
+    try {
+      const detailsResult = await this.userDetailsService.crateUserDetails(
+        phoneNumber,
+        newUser,
+        gender,
+      );
+      if (!detailsResult)
+        return {
+          status: 400,
+          message:
+            'Failed to add new user. Failed to create user details. Probably this phone Number is already registered.',
+        };
+    } catch (err) {
+      // removing user if cannot create details for him
+      User.remove(newUser);
+      return {
+        status: 400,
+        message:
+          'Failed to add new user. Failed to create user details. Probably this phone Number is already registered',
+        data: err,
+      };
+    }
 
-    if (!detailsResult) return 'Failure';
-    return 'Success';
+    return {
+      status: 201,
+      message: 'Successfully created new user account with details',
+    };
   }
 
   async deleteUser(email: string): Promise<MyResponse> {
