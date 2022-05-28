@@ -51,7 +51,8 @@ export class UsersCoachesService {
   }
 
   async createCoachSwimmerRecord(swimmerEmail: string, coachEmail: string) {
-    if (swimmerEmail === coachEmail) return 'Emails are equal!';
+    if (swimmerEmail === coachEmail)
+      return { status: 400, message: 'Emails are equal!' };
     const swimmer = await this.usersService.findOneByEmail(swimmerEmail);
     const coach = await this.usersService.findOneByEmail(coachEmail);
 
@@ -79,6 +80,8 @@ export class UsersCoachesService {
   }
 
   async deleteCoachSwimmerRecord(swimmerEmail: string, coachEmail: string) {
+    if (swimmerEmail === coachEmail)
+      return { status: 400, message: 'Emails are equal!' };
     const swimmer = await this.usersService.findOneByEmail(swimmerEmail);
     const coach = await this.usersService.findOneByEmail(coachEmail);
 
