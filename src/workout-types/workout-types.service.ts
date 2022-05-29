@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { WorkoutTypes } from 'src/entities/workout-types.entity';
-import { WorkoutTypesModule } from './workout-types.module';
 
 @Injectable()
 export class WorkoutTypesService {
@@ -8,7 +7,7 @@ export class WorkoutTypesService {
     return await WorkoutTypes.find();
   }
 
-  async findWorkoutTypeByName(type: string): Promise<WorkoutTypesModule> {
+  async findWorkoutTypeByName(type: string): Promise<WorkoutTypes> {
     return await WorkoutTypes.findOne({ type });
   }
 }
