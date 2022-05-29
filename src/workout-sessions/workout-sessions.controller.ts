@@ -31,7 +31,7 @@ export class WorkoutSessionsController {
   }
 
   @Get('/:id')
-  async getWorkoutSessionById(@Param() id: string) {
+  async getWorkoutSessionById(@Param('id') id: string) {
     return await this.workoutSessionService.getWorkoutSessionById(id);
   }
 }

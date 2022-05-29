@@ -45,4 +45,6 @@ export class UserDetailsService {
     UserDetails.save(userDetails);
     return 'Success';
   }
+
+  // TODO add method/s to update data
 }

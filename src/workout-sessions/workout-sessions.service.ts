@@ -6,7 +6,6 @@ import { UsersService } from 'src/users/users.service';
 export class WorkoutSessionsService {
   constructor(private usersService: UsersService) {}
 
-  // TODO test everything
   async createWorkoutSession(swimmerEmail: string, coachEmail: string) {
     if (swimmerEmail === coachEmail)
       return { status: 400, message: 'Emails are equal!' };
@@ -56,6 +55,8 @@ export class WorkoutSessionsService {
   }
 
   async getWorkoutSessionById(workoutSessionId: string) {
-    return await WorkoutSession.findOne(workoutSessionId);
+    return await WorkoutSession.findOne({
+      where: { id: workoutSessionId },
+    });
   }
 }
