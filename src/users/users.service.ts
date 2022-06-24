@@ -33,10 +33,11 @@ export class UsersService {
     const result = await this.findOneByEmail(email);
     if (!result) return result;
 
-    const { user, gender, ...userDetails } =
-      await this.userDetailsService.findUserDetails(result);
+    const details = await this.userDetailsService.findUserDetails(result);
     const { id, password, userRole, ...userData } = result;
+    if (!details) return { ...userData, role: userRole.role };
 
+    const { user, gender, ...userDetails } = details;
     return {
       ...userData,
       ...userDetails,

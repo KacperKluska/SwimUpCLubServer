@@ -8,14 +8,12 @@ export class UserDetailsService {
   constructor(private gendersService: GendersService) {}
 
   async findUserDetails(user: User) {
-    const details = (
-      await UserDetails.find({
-        relations: ['user', 'gender'],
-        where: {
-          user: user,
-        },
-      })
-    )[0];
+    const details = await UserDetails.findOne({
+      relations: ['user', 'gender'],
+      where: {
+        user: user,
+      },
+    });
 
     return details;
   }
