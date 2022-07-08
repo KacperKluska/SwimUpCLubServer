@@ -2,6 +2,7 @@ import {
   Controller,
   Delete,
   Get,
+  HttpStatus,
   Post,
   Query,
   Req,
@@ -47,9 +48,15 @@ export class UploadsController {
 
   @Get('file')
   @UseGuards(JwtAuthGuard)
-  async getImage(@Req() req, @Res() response: Response) {
+  async getImage(@Req() req, @Res() res: Response) {
     const imageName = await this.usersService.getUserImageName(req.user.email);
-    response.sendFile(imageName, { root: process.env.UPLOAD_USER_DIR });
+    if (!imageName) {
+      res.status(HttpStatus.NOT_FOUND).send({
+        message: "User don't have a profile image yet",
+      });
+      return;
+    }
+    res.sendFile(imageName, { root: process.env.UPLOAD_USER_DIR });
   }
 
   @Delete('file')
