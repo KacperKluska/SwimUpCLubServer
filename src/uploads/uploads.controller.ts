@@ -1,5 +1,6 @@
 import {
   Controller,
+  Delete,
   Get,
   Post,
   Query,
@@ -49,5 +50,11 @@ export class UploadsController {
   async getImage(@Req() req, @Res() response: Response) {
     const imageName = await this.usersService.getUserImageName(req.user.email);
     response.sendFile(imageName, { root: process.env.UPLOAD_USER_DIR });
+  }
+
+  @Delete('file')
+  @UseGuards(JwtAuthGuard)
+  async removeUserImage(@Req() req, @Res() response: Response) {
+    response.send(await this.usersService.removeUserImage(req.user.email));
   }
 }

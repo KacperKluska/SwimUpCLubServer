@@ -37,7 +37,7 @@ export class UserDetailsService {
     return result;
   }
 
-  async updateUserImage(user: User, imageName: string) {
+  async updateUserImage(user: User, imageName: string | null) {
     const userDetails = await this.findUserDetails(user);
     userDetails.photo = imageName;
     UserDetails.save(userDetails);

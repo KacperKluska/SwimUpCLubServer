@@ -171,11 +171,35 @@ export class UsersService {
     return { status: 200, message: `User with email: ${email} removed` };
   }
 
-  async updateUserImageName(email: string, imageName: string): Promise<string> {
+  async updateUserImageName(
+    email: string,
+    imageName: string,
+  ): Promise<MyResponse> {
     const user = await this.findOneByEmail(email);
-    console.log(user);
-    console.log(imageName);
-    return await this.userDetailsService.updateUserImage(user, imageName);
+    if (!user || !imageName) {
+      return {
+        status: 400,
+        message: 'Cannot update user image. Unsupported image format',
+      };
+    }
+    return {
+      status: 201,
+      message: await this.userDetailsService.updateUserImage(user, imageName),
+    };
+  }
+
+  async removeUserImage(email: string): Promise<MyResponse> {
+    const user = await this.findOneByEmail(email);
+    if (!user) {
+      return {
+        status: 400,
+        message: 'Cannot remove user image',
+      };
+    }
+    return {
+      status: 201,
+      message: await this.userDetailsService.updateUserImage(user, null),
+    };
   }
 
   async getUserImageName(email: string): Promise<string> {
