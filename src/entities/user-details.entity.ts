@@ -14,6 +14,8 @@ import { User } from './user.entity';
 export class UserDetails extends BaseEntity {
   constructor(
     phoneNumber: string,
+    gender: Gender,
+    user: User,
     photo?: string,
     age?: number,
     weight?: number,
@@ -25,6 +27,8 @@ export class UserDetails extends BaseEntity {
     this.age = age;
     this.weight = weight;
     this.height = height;
+    this.gender = gender;
+    this.user = user;
   }
 
   @PrimaryGeneratedColumn('uuid')

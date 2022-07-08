@@ -4,11 +4,12 @@ import {
   Delete,
   Get,
   Post,
+  Query,
   Req,
   Res,
   UseGuards,
 } from '@nestjs/common';
-import { newUserDTO, userLoginDTO } from 'src/users/dto/userAuth';
+import { NewUserDTO, UserLoginDTO } from 'src/users/dto/userAuth';
 import { AuthService } from './auth.service';
 import { Response } from 'express';
 import { MyResponse } from 'src/shared_dto/response';
@@ -23,10 +24,10 @@ export class AuthController {
 
   @Get('login')
   async login(
-    @Body() body: userLoginDTO,
+    @Query() query: UserLoginDTO,
     @Res({ passthrough: true }) response,
   ) {
-    return await this.authService.loginUser(body, response);
+    return await this.authService.loginUser(query, response);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -37,12 +38,19 @@ export class AuthController {
 
   @Get('refresh')
   @UseGuards(JwtAuthGuard)
-  refreshToken(@Req() request, @Res({ passthrough: true }) response) {
-    return this.authService.refreshToken(
+  async refreshToken(
+    @Req() request,
+    @Res({ passthrough: true }) response,
+  ): Promise<MyResponse> {
+    const result = await this.authService.refreshToken(
       response,
       request.user.email,
       request.user.role,
     );
+    return {
+      ...result,
+      data: { email: request.user.email, role: request.user.role },
+    };
   }
 
   @Post('register')
@@ -50,7 +58,7 @@ export class AuthController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   async register(
     @Body()
-    body: newUserDTO,
+    body: NewUserDTO,
   ): Promise<MyResponse> {
     return await this.authService.registerNewUser(body);
   }

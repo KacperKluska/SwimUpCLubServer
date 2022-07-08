@@ -19,6 +19,8 @@ export class Workout extends BaseEntity {
     workoutTypes: WorkoutTypes,
     swimmingStyle: SwimmingStyle,
     poolLength: PoolLength,
+    averageSpeed: number,
+    averagePace: number,
   ) {
     super();
     this.time = time;
@@ -27,6 +29,8 @@ export class Workout extends BaseEntity {
     this.workoutTypes = workoutTypes;
     this.swimmingStyle = swimmingStyle;
     this.poolLength = poolLength;
+    this.averageSpeed = averageSpeed;
+    this.averagePace = averagePace;
   }
 
   @PrimaryGeneratedColumn('uuid')
@@ -41,6 +45,7 @@ export class Workout extends BaseEntity {
   @Column({ type: 'double precision' })
   averageSpeed: number;
 
+  // TODO convert it into a string (same like a time higher) or keep it as seconds and convert it to minutes and seconds on FE
   @Column({ type: 'double precision' })
   averagePace: number;
 
