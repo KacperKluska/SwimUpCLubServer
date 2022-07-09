@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { UserDetails } from 'src/entities/user-details.entity';
 import { User } from 'src/entities/user.entity';
 import { GendersService } from 'src/genders/genders.service';
+import { MyResponse } from 'src/shared_dto/response';
 
 @Injectable()
 export class UserDetailsService {
@@ -37,12 +38,47 @@ export class UserDetailsService {
     return result;
   }
 
-  async updateUserImage(user: User, imageName: string | null) {
-    const userDetails = await this.findUserDetails(user);
-    userDetails.photo = imageName;
-    UserDetails.save(userDetails);
-    return 'Success';
+  async updateUserImage(
+    user: User,
+    imageName: string | null,
+  ): Promise<MyResponse> {
+    try {
+      const userDetails = await this.findUserDetails(user);
+      userDetails.photo = imageName;
+      await UserDetails.save(userDetails);
+    } catch (error) {
+      return {
+        status: 400,
+        message: 'There was an unexpected error',
+        data: error,
+      };
+    }
+    return { status: 201, message: 'Successfully updated user image.' };
   }
 
-  // TODO add method/s to update data
+  async updateUserDetails(
+    user: User,
+    newAge: number,
+    newWeight: number,
+    newHeight: number,
+    newPhoneNumber: string,
+  ): Promise<MyResponse> {
+    try {
+      const userDetails = await this.findUserDetails(user);
+      if (!userDetails)
+        return { status: 404, message: "Couldn't find user details." };
+      userDetails.age = newAge;
+      userDetails.weight = newWeight;
+      userDetails.height = newHeight;
+      userDetails.phoneNumber = newPhoneNumber;
+      await UserDetails.save(userDetails);
+    } catch (error) {
+      return {
+        status: 400,
+        message: 'There was an unexpected error',
+        data: error,
+      };
+    }
+    return { status: 201, message: 'Successfully updated user details.' };
+  }
 }

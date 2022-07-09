@@ -58,6 +58,57 @@ export class UsersService {
     };
   }
 
+  async updateUserData(
+    email: string,
+    newName: string,
+    newSurname: string,
+    newEmail: string,
+  ): Promise<MyResponse> {
+    try {
+      const foundUser = await this.findOneByEmail(email);
+      if (!foundUser) return { status: 404, message: "Couldn't find a user." };
+
+      foundUser.email = newEmail;
+      foundUser.name = newName;
+      foundUser.surname = newSurname;
+      await User.save(foundUser);
+    } catch (error) {
+      return {
+        status: 404,
+        message: 'There was an error while updating user data',
+        data: error,
+      };
+    }
+    return { status: 201, message: 'Successfully updated data' };
+  }
+
+  async updateUserDetails(
+    email: string,
+    newAge: number,
+    newWeight: number,
+    newHeight: number,
+    newPhoneNumber: string,
+  ): Promise<MyResponse> {
+    try {
+      const foundUser = await this.findOneByEmail(email);
+      if (!foundUser) return { status: 404, message: "Couldn't find a user." };
+
+      return await this.userDetailsService.updateUserDetails(
+        foundUser,
+        newAge,
+        newWeight,
+        newHeight,
+        newPhoneNumber,
+      );
+    } catch (error) {
+      return {
+        status: 404,
+        message: 'There was an error while updating user data',
+        data: error,
+      };
+    }
+  }
+
   private async findUsersWithRole(role: string): Promise<User[]> {
     const users = await User.find({
       relations: ['userRole'],
@@ -182,10 +233,7 @@ export class UsersService {
         message: 'Cannot update user image. Unsupported image format',
       };
     }
-    return {
-      status: 201,
-      message: await this.userDetailsService.updateUserImage(user, imageName),
-    };
+    return await this.userDetailsService.updateUserImage(user, imageName);
   }
 
   async removeUserImage(email: string): Promise<MyResponse> {
@@ -196,10 +244,7 @@ export class UsersService {
         message: 'Cannot remove user image',
       };
     }
-    return {
-      status: 201,
-      message: await this.userDetailsService.updateUserImage(user, null),
-    };
+    return await this.userDetailsService.updateUserImage(user, null);
   }
 
   async getUserImageName(email: string): Promise<string> {
