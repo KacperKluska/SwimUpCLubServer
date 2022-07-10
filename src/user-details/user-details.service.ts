@@ -44,6 +44,9 @@ export class UserDetailsService {
   ): Promise<MyResponse> {
     try {
       const userDetails = await this.findUserDetails(user);
+      if (!userDetails) {
+        return { status: 404, message: "Couldn't find user details." };
+      }
       userDetails.photo = imageName;
       await UserDetails.save(userDetails);
     } catch (error) {

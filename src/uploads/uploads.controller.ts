@@ -41,9 +41,12 @@ export class UploadsController {
   @Post('file')
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(FileInterceptor('photo', multerUserOptions))
-  async uploadFile(@Req() req, @UploadedFile() file) {
-    this.usersService.updateUserImageName(req.user.email, req.user.path);
-    return { message: 'File uploaded' };
+  async uploadFile(@Req() req, @UploadedFile() file, @Res() res: Response) {
+    const result = await this.usersService.updateUserImageName(
+      req.user.email,
+      req.user.path,
+    );
+    res.status(result.status).send(result.message);
   }
 
   @Get('file')
