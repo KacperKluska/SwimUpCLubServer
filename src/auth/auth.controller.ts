@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Patch,
   Post,
   Query,
   Req,
@@ -61,5 +62,33 @@ export class AuthController {
     body: NewUserDTO,
   ): Promise<MyResponse> {
     return await this.authService.registerNewUser(body);
+  }
+
+  @Patch('change-password')
+  @UseGuards(JwtAuthGuard)
+  async changePassword(
+    @Req() req,
+    @Body()
+    body: {
+      password: string;
+    },
+  ) {
+    return await this.authService.changeUserPassword(
+      req.user.email,
+      body.password,
+    );
+  }
+
+  @Patch('change-other-password')
+  @Roles(Role.ADMIN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  async changeOtherPassword(
+    @Body()
+    body: {
+      email: string;
+      password: string;
+    },
+  ) {
+    return await this.authService.changeUserPassword(body.email, body.password);
   }
 }

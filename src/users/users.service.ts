@@ -265,4 +265,17 @@ export class UsersService {
   async getAllGenders(): Promise<Gender[]> {
     return await this.gendersService.findAllGenders();
   }
+
+  async updatePassword(
+    user: User,
+    hashedPassword: string,
+  ): Promise<MyResponse> {
+    try {
+      user.password = hashedPassword;
+      await User.save(user);
+      return { status: 200, message: 'Password changed.' };
+    } catch (error) {
+      return { status: 400, message: `Couldn't update user password.` };
+    }
+  }
 }

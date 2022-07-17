@@ -143,4 +143,17 @@ export class AuthService {
 
     return result;
   }
+
+  async changeUserPassword(
+    email: string,
+    password: string,
+  ): Promise<MyResponse> {
+    const foundUser = await this.userService.findOneByEmail(email);
+    if (!foundUser) return { status: 404, message: 'User not found.' };
+
+    const saltOrRounds = parseInt(process.env.SALT_OF_ROUNDS);
+    const hashedPassword = await bcrypt.hash(password, saltOrRounds);
+
+    return await this.userService.updatePassword(foundUser, hashedPassword);
+  }
 }
