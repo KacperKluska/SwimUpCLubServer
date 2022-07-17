@@ -213,6 +213,11 @@ export class UsersService {
 
   async deleteUser(email: string): Promise<MyResponse> {
     const user = await this.findOneByEmail(email);
+    if (!user)
+      return {
+        status: 404,
+        message: 'Cannot find user with this email address',
+      };
     const result = await User.remove(user);
     if (!result)
       return {

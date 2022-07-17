@@ -3,8 +3,8 @@ import {
   Controller,
   Delete,
   Get,
-  HttpStatus,
   Patch,
+  Query,
   Req,
   Res,
   UseGuards,
@@ -13,7 +13,12 @@ import { Response } from 'express';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { JwtAuthGuard, RolesGuard } from 'src/auth/guards';
 import { Role } from 'src/auth/utils/roles.enum';
-import { UserDataToUpdate, UserDetailsToUpdate } from './dto/userData';
+import {
+  OtherUserDataToUpdate,
+  OtherUserDetailsToUpdate,
+  UserDataToUpdate,
+  UserDetailsToUpdate,
+} from './dto/userData';
 import { UsersService } from './users.service';
 
 @Controller('users')
@@ -24,6 +29,48 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   async findUser(@Req() request) {
     return await this.userService.getUserDataWithDetails(request.user.email);
+  }
+
+  @Get('other-user')
+  @Roles(Role.ADMIN, Role.COACH)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  async findOtherUser(@Query('email') email) {
+    return await this.userService.getUserDataWithDetails(email);
+  }
+
+  @Patch('other-user')
+  @Roles(Role.ADMIN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  async updateOtherUserData(
+    @Req() request,
+    @Body() body: OtherUserDataToUpdate,
+    @Res() response: Response,
+  ) {
+    const result = await this.userService.updateUserData(
+      body.email,
+      body.newName,
+      body.newSurname,
+      body.newEmail,
+    );
+    response.status(result.status).send({ ...result });
+  }
+
+  @Patch('other-user/details')
+  @Roles(Role.ADMIN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  async updateOtherUserDetails(
+    @Req() request,
+    @Body() body: OtherUserDetailsToUpdate,
+    @Res() response: Response,
+  ) {
+    const result = await this.userService.updateUserDetails(
+      body.email,
+      body.newAge,
+      body.newWeight,
+      body.newHeight,
+      body.newPhoneNumber,
+    );
+    response.status(result.status).send({ ...result });
   }
 
   @Patch('user')
@@ -83,8 +130,9 @@ export class UsersController {
   @Delete()
   @Roles(Role.ADMIN)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  async deleteUser(@Body() body: { email: string }) {
-    return await this.userService.deleteUser(body.email);
+  async deleteUser(@Query('email') email, @Res() res: Response) {
+    const result = await this.userService.deleteUser(email);
+    res.status(result.status).send(result.message);
   }
 
   @Get('genders')
