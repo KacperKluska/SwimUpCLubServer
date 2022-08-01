@@ -1,5 +1,4 @@
 import {
-  Body,
   Controller,
   Delete,
   Get,
@@ -27,12 +26,12 @@ export class UsersCoachesController {
   @Roles(Role.COACH)
   @UseGuards(JwtAuthGuard, RolesGuard)
   async createSwimmerCoachRecord(
-    @Body() body: EmailsBody,
+    @Query() query: EmailsBody,
     @Res() res: Response,
   ) {
     const result = await this.usersCoachesService.createCoachSwimmerRecord(
-      body.swimmerEmail,
-      body.coachEmail,
+      query.swimmerEmail,
+      query.coachEmail,
     );
     res.status(result.status).send({ message: result.message, ...result.data });
   }
@@ -41,12 +40,12 @@ export class UsersCoachesController {
   @Roles(Role.COACH)
   @UseGuards(JwtAuthGuard, RolesGuard)
   async deleteSwimmerCoachRecord(
-    @Body() body: EmailsBody,
+    @Query() query: EmailsBody,
     @Res() res: Response,
   ) {
     const result = await this.usersCoachesService.deleteCoachSwimmerRecord(
-      body.swimmerEmail,
-      body.coachEmail,
+      query.swimmerEmail,
+      query.coachEmail,
     );
     res.status(result.status).send({ message: result.message, ...result.data });
   }
