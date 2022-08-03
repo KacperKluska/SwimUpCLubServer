@@ -72,11 +72,13 @@ export class AuthController {
     body: {
       password: string;
     },
+    @Res() res: Response,
   ) {
-    return await this.authService.changeUserPassword(
+    const result = await this.authService.changeUserPassword(
       req.user.email,
       body.password,
     );
+    res.status(result.status).send(result);
   }
 
   @Patch('change-other-password')
@@ -88,7 +90,12 @@ export class AuthController {
       email: string;
       password: string;
     },
+    @Res() res: Response,
   ) {
-    return await this.authService.changeUserPassword(body.email, body.password);
+    const result = await this.authService.changeUserPassword(
+      body.email,
+      body.password,
+    );
+    res.status(result.status).send(result);
   }
 }
