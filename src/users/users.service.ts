@@ -135,32 +135,55 @@ export class UsersService {
     return result;
   }
 
-  async findAllSwimmers(): Promise<UserData[]> {
-    const swimmers = await this.findUsersWithRole('USER');
-
-    const result = swimmers.map((user) => {
+  async findAllSwimmers(): Promise<MyResponse> {
+    try {
+      const swimmers = await this.findUsersWithRole('USER');
+      const result = swimmers.map((user) => {
+        return {
+          name: user.name,
+          surname: user.surname,
+          email: user.email,
+          role: user.userRole.role,
+        };
+      });
       return {
-        name: user.name,
-        surname: user.surname,
-        email: user.email,
-        role: user.userRole.role,
+        status: 200,
+        message: 'Success',
+        data: { swimmers: result },
       };
-    });
-    return result;
+    } catch (error) {
+      return {
+        status: 400,
+        message: 'There was an error while fetching swimmers data.',
+        data: error,
+      };
+    }
   }
 
-  async findAllCoaches(): Promise<UserData[]> {
-    const coaches = await this.findUsersWithRole('COACH');
+  async findAllCoaches(): Promise<MyResponse> {
+    try {
+      const coaches = await this.findUsersWithRole('COACH');
 
-    const result = coaches.map((user) => {
+      const result = coaches.map((user) => {
+        return {
+          name: user.name,
+          surname: user.surname,
+          email: user.email,
+          role: user.userRole.role,
+        };
+      });
       return {
-        name: user.name,
-        surname: user.surname,
-        email: user.email,
-        role: user.userRole.role,
+        status: 200,
+        message: 'Success',
+        data: { coaches: result },
       };
-    });
-    return result;
+    } catch (error) {
+      return {
+        status: 400,
+        message: 'There was an error while fetching coaches data.',
+        data: error,
+      };
+    }
   }
 
   async createUserWithDetails(

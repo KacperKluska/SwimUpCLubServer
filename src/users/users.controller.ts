@@ -116,15 +116,17 @@ export class UsersController {
   @Get('swimmers')
   @Roles(Role.ADMIN, Role.COACH)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  async findAllSwimmers() {
-    return await this.userService.findAllSwimmers();
+  async findAllSwimmers(@Res() res: Response) {
+    const result = await this.userService.findAllSwimmers();
+    res.status(result.status).send({ message: result.message, ...result.data });
   }
 
   @Get('coaches')
   @Roles(Role.ADMIN)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  async findAllCoaches() {
-    return await this.userService.findAllCoaches();
+  async findAllCoaches(@Res() res: Response) {
+    const result = await this.userService.findAllCoaches();
+    res.status(result.status).send({ message: result.message, ...result.data });
   }
 
   @Delete()
