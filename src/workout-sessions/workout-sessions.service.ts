@@ -1,12 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { WorkoutSession } from 'src/entities/workout-session.entity';
+import { MyResponse } from 'src/shared_dto/response';
 import { UsersService } from 'src/users/users.service';
+import { serverErrorResponse } from 'src/shared_dto/error';
 
 @Injectable()
 export class WorkoutSessionsService {
   constructor(private usersService: UsersService) {}
 
-  async createWorkoutSession(swimmerEmail: string, coachEmail: string) {
+  async createWorkoutSession(
+    swimmerEmail: string,
+    coachEmail: string,
+  ): Promise<MyResponse> {
     try {
       if (swimmerEmail === coachEmail)
         return { status: 400, message: 'Emails are equal!' };
@@ -31,11 +36,7 @@ export class WorkoutSessionsService {
         data: result,
       };
     } catch (error) {
-      return {
-        status: 500,
-        message: `Couldn't create workout session.`,
-        data: error,
-      };
+      return serverErrorResponse(error);
     }
   }
 
@@ -71,5 +72,24 @@ export class WorkoutSessionsService {
     return await WorkoutSession.findOne({
       where: { id: workoutSessionId },
     });
+  }
+
+  async deleteWorkoutSession(id: string): Promise<MyResponse> {
+    try {
+      const ws = await this.getWorkoutSessionById(id);
+      if (!ws) {
+        return {
+          status: 400,
+          message: `Couldn't find workout session.`,
+        };
+      }
+      await WorkoutSession.remove(ws);
+      return {
+        status: 200,
+        message: `Workout session removed.`,
+      };
+    } catch (error) {
+      return serverErrorResponse(error);
+    }
   }
 }

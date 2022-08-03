@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -31,6 +32,14 @@ export class WorkoutSessionsController {
       body.swimmerEmail,
       body.coachEmail,
     );
+    res.status(result.status).send({ message: result.message, ...result.data });
+  }
+
+  @Delete()
+  @Roles(Role.COACH)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  async deleteWorkoutSession(@Query('id') id, @Res() res: Response) {
+    const result = await this.workoutSessionService.deleteWorkoutSession(id);
     res.status(result.status).send({ message: result.message, ...result.data });
   }
 
