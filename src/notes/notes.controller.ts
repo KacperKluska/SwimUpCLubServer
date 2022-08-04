@@ -37,8 +37,8 @@ export class NotesController {
   @Delete()
   @Roles(Role.COACH)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  async deleteNote(@Body() body: { noteId: string }, @Res() res: Response) {
-    const result = await this.notesService.deleteNote(body.noteId);
+  async deleteNote(@Query('noteId') noteId: string, @Res() res: Response) {
+    const result = await this.notesService.deleteNote(noteId);
     res.status(result.status).send({ message: result.message, ...result.data });
   }
 
