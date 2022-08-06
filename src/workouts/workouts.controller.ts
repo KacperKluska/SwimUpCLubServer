@@ -6,11 +6,17 @@ import {
   Param,
   Post,
   Query,
+  Res,
+  UseGuards,
 } from '@nestjs/common';
 import { PoolLengthsService } from 'src/pool-lengths/pool-lengths.service';
 import { SwimmingStylesService } from 'src/swimming-styles/swimming-styles.service';
 import { WorkoutTypesService } from 'src/workout-types/workout-types.service';
 import { WorkoutsService } from './workouts.service';
+import { Response } from 'express';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { JwtAuthGuard, RolesGuard } from 'src/auth/guards';
+import { Role } from 'src/auth/utils/roles.enum';
 
 @Controller('workouts')
 export class WorkoutsController {
@@ -22,6 +28,8 @@ export class WorkoutsController {
   ) {}
 
   @Post()
+  @Roles(Role.COACH)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   async createWorkout(
     @Body()
     body: {
@@ -43,40 +51,36 @@ export class WorkoutsController {
     );
   }
 
-  // TODO handle empty answer when couldn't find poolLength, swimmingStyle or workoutType
   @Get('poolLengths')
-  async getAllPoolLengths() {
-    return await this.poolLengthsService.findAllPoolLengths();
-  }
-
-  @Get('poolLength')
-  async getPoolLengthByLength(@Query() query: { length: number }) {
-    return await this.poolLengthsService.findPoolLengthByLength(query.length);
+  @Roles(Role.COACH)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  async getAllPoolLengths(@Res() res: Response) {
+    const result = await this.poolLengthsService.findAllPoolLengths();
+    res.status(result.status).send({ message: result.message, ...result.data });
   }
 
   @Get('swimmingStyles')
-  async getAllSwimmingStyles() {
-    return await this.swimmingStylesService.findAllSwimmingStyles();
-  }
-
-  @Get('swimmingStyle')
-  async getSwimmingStyleByName(@Query() query: { name: string }) {
-    return await this.swimmingStylesService.findSwimmingStyleByName(query.name);
+  @Roles(Role.COACH)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  async getAllSwimmingStyles(@Res() res: Response) {
+    const result = await this.swimmingStylesService.findAllSwimmingStyles();
+    res.status(result.status).send({ message: result.message, ...result.data });
   }
 
   @Get('workoutTypes')
-  async getAllWorkoutTypes() {
-    return await this.workoutTypesService.findAllWorkoutTypes();
-  }
-
-  @Get('workoutType')
-  async getWorkoutTypeByName(@Query() query: { name: string }) {
-    return await this.workoutTypesService.findWorkoutTypeByName(query.name);
+  @Roles(Role.COACH)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  async getAllWorkoutTypes(@Res() res: Response) {
+    const result = await this.workoutTypesService.findAllWorkoutTypes();
+    res.status(result.status).send({ message: result.message, ...result.data });
   }
 
   @Delete('/:id')
-  async deleteWorkout(@Param('id') id: string) {
-    return await this.workoutsService.deleteWorkout(id);
+  @Roles(Role.COACH)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  async deleteWorkout(@Param('id') id: string, @Res() res: Response) {
+    const result = await this.workoutsService.deleteWorkout(id);
+    res.status(result.status).send({ message: result.message, ...result.data });
   }
 
   @Get('/:id')
@@ -85,9 +89,15 @@ export class WorkoutsController {
   }
 
   @Get()
-  async getAllWorkouts(@Query() query: { workoutSessionId: string }) {
-    return await this.workoutsService.getAllWorkoutsByWorkoutSessionId(
+  @Roles(Role.COACH, Role.USER)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  async getAllWorkouts(
+    @Query() query: { workoutSessionId: string },
+    @Res() res: Response,
+  ) {
+    const result = await this.workoutsService.getAllWorkoutsByWorkoutSessionId(
       query.workoutSessionId,
     );
+    res.status(result.status).send({ message: result.message, ...result.data });
   }
 }
