@@ -40,8 +40,9 @@ export class WorkoutsController {
       time: string;
       distance: number;
     },
+    @Res() res: Response,
   ) {
-    return await this.workoutsService.createWorkout(
+    const result = await this.workoutsService.createWorkout(
       body.workoutSessionId,
       body.workoutType,
       body.poolLength,
@@ -49,6 +50,7 @@ export class WorkoutsController {
       body.time,
       body.distance,
     );
+    res.status(result.status).send({ message: result.message, ...result.data });
   }
 
   @Get('poolLengths')
