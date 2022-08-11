@@ -3,6 +3,7 @@ import {
   Delete,
   Get,
   HttpStatus,
+  Param,
   Post,
   Query,
   Req,
@@ -53,6 +54,22 @@ export class UploadsController {
   @UseGuards(JwtAuthGuard)
   async getImage(@Req() req, @Res() res: Response) {
     const imageName = await this.usersService.getUserImageName(req.user.email);
+    if (!imageName) {
+      res.status(HttpStatus.NOT_FOUND).send({
+        message: "User don't have a profile image yet",
+      });
+      return;
+    }
+    res.sendFile(imageName, { root: process.env.UPLOAD_USER_DIR });
+  }
+
+  @Get('otherUserFile/:userEmail')
+  @UseGuards(JwtAuthGuard)
+  async getOtherUserImage(
+    @Param('userEmail') userEmail: string,
+    @Res() res: Response,
+  ) {
+    const imageName = await this.usersService.getUserImageName(userEmail);
     if (!imageName) {
       res.status(HttpStatus.NOT_FOUND).send({
         message: "User don't have a profile image yet",
