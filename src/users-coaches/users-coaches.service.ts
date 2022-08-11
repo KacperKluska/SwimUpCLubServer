@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { UsersCoaches } from 'src/entities/users-coaches.entity';
-import { serverError, serverErrorResponse } from 'src/shared_dto/error';
+import { serverErrorResponse } from 'src/shared_dto/error';
 import { MyResponse } from 'src/shared_dto/response';
 import { UsersService } from 'src/users/users.service';
 
