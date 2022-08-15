@@ -49,6 +49,10 @@ export class WorkoutSessionsService {
     const result = await WorkoutSession.find({
       relations: ['coach', 'swimmer'],
       where: { swimmer: swimmer },
+      take: 30,
+      order: {
+        date: 'DESC',
+      },
     });
 
     return { status: 200, message: `Success`, data: result };
@@ -63,6 +67,10 @@ export class WorkoutSessionsService {
     const result = await WorkoutSession.find({
       relations: ['coach', 'swimmer'],
       where: { coach: coach },
+      take: 30,
+      order: {
+        date: 'DESC',
+      },
     });
 
     return { status: 200, message: `Success`, data: result };

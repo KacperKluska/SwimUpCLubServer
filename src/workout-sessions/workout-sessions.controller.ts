@@ -17,10 +17,8 @@ import { Role } from 'src/auth/utils/roles.enum';
 
 @Controller('workout-sessions')
 export class WorkoutSessionsController {
-  // TODO create endpoints for GET (by date)
   constructor(private workoutSessionService: WorkoutSessionsService) {}
 
-  // TODO refactor others like that one
   @Post()
   @Roles(Role.COACH)
   @UseGuards(JwtAuthGuard, RolesGuard)
@@ -46,25 +44,26 @@ export class WorkoutSessionsController {
   @Get('forSwimmer')
   @Roles(Role.COACH, Role.USER)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  async getSwimmerWorkoutSessions(@Query() query: { email: string }) {
-    return await this.workoutSessionService.getSwimmerWorkoutSessions(
+  async getSwimmerWorkoutSessions(
+    @Query() query: { email: string },
+    @Res() res: Response,
+  ) {
+    const result = await this.workoutSessionService.getSwimmerWorkoutSessions(
       query.email,
     );
+    res.status(result.status).send({ message: result.message, ...result.data });
   }
 
   @Get('forCoach')
   @Roles(Role.COACH)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  async getCoachWorkoutSessions(@Query() query: { email: string }) {
-    return await this.workoutSessionService.getCoachWorkoutSessions(
+  async getCoachWorkoutSessions(
+    @Query() query: { email: string },
+    @Res() res: Response,
+  ) {
+    const result = await this.workoutSessionService.getCoachWorkoutSessions(
       query.email,
     );
-  }
-
-  @Get('/:id')
-  @Roles(Role.COACH, Role.USER)
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  async getWorkoutSessionById(@Param('id') id: string) {
-    return await this.workoutSessionService.getWorkoutSessionById(id);
+    res.status(result.status).send({ message: result.message, ...result.data });
   }
 }
