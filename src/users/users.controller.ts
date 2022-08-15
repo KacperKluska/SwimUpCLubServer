@@ -32,7 +32,7 @@ export class UsersController {
   }
 
   @Get('other-user')
-  @Roles(Role.ADMIN, Role.COACH)
+  @Roles(Role.ADMIN, Role.COACH, Role.USER)
   @UseGuards(JwtAuthGuard, RolesGuard)
   async findOtherUser(@Query('email') email) {
     return await this.userService.getUserDataWithDetails(email);
