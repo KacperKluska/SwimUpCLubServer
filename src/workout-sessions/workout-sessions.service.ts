@@ -55,7 +55,7 @@ export class WorkoutSessionsService {
       },
     });
 
-    return { status: 200, message: `Success`, data: result };
+    return { status: 200, message: `Success`, data: { sessions: result } };
   }
 
   async getCoachWorkoutSessions(coachEmail: string) {
@@ -73,7 +73,7 @@ export class WorkoutSessionsService {
       },
     });
 
-    return { status: 200, message: `Success`, data: result };
+    return { status: 200, message: `Success`, data: { sessions: result } };
   }
 
   async getWorkoutSessionById(workoutSessionId: string) {
