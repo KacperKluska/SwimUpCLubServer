@@ -16,6 +16,7 @@ import { PoolLengthsModule } from './pool-lengths/pool-lengths.module';
 import { AuthModule } from './auth/auth.module';
 import { SeedsModule } from './seeds/seeds.module';
 import { UploadsModule } from './uploads/uploads.module';
+import { EventsModule } from './events/events.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { UploadsModule } from './uploads/uploads.module';
     AuthModule,
     SeedsModule,
     UploadsModule,
+    EventsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
